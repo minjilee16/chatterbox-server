@@ -8,22 +8,33 @@ var defaultCorsHeaders = {
 var requestHandler = function(request, response) {
   console.log('Serving request type ' + request.method + ' for url ' + request.url);
   var statusCode = 200;
+
+
   var data = {};
   data['results'] = [];
+
+  var sample = {
+    username: 'Jono',
+    message: 'Do my bidding!'
+  };
+
+  data['results'].push(sample);
+
+
   // headers
   var headers = defaultCorsHeaders;
   headers['Content-Type'] = 'text/plain';
 
   var reqMethod = request.method;
 
-  if(reqMethod === 'POST') {
-  }
+  // if(reqMethod === 'POST') {
+  // }
 
-  if(reqMethod === 'GET') {
-  }
+  // if(reqMethod === 'GET') {
+  // }
 
-  if(reqMethod === 'OPIONS') {
-  }
+  // if(reqMethod === 'OPTIONS') {
+  // }
  
   // response
   response.writeHead(statusCode, headers);
