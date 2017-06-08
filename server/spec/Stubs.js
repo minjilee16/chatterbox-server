@@ -13,8 +13,10 @@ module.exports = {
     }.bind(this);
 
     this.end = function(data) {
+      data = {data};
+      data['results'] = [];
       this._ended = true;
-      this._data = data;
+      this._data = JSON.stringify(data);
     }.bind(this);
   },
 

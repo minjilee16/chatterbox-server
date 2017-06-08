@@ -1,3 +1,4 @@
+
 {
   "name": "chatterbox-server",
   "version": "1.1.0",
@@ -14,7 +15,8 @@
     "start:es6": "babel-node server/basic-server.js",
     "test": "mocha server/spec",
     "test:es6": "mocha --compilers js:babel-register server/spec",
-    "lint": "eslint ./"
+    "lint": "eslint ./",
+    "nodemon": "nodemon server/basic-server.js http://127.0.0.1 3000"
   },
   "devDependencies": {
     "babel-cli": "^6.7.5",
@@ -23,11 +25,15 @@
     "chai": "^3.5.0",
     "eslint-config-hackreactor": "git://github.com/reactorcore/eslint-config-hackreactor",
     "mocha": "^2.4.5",
+    "nodemon": "^1.11.0",
     "request": "^2.70.0"
   },
   "babel": {
     "presets": [
       "es2015"
     ]
+  },
+  "dependencies": {
+    "underscore": "^1.8.3"
   }
 }
