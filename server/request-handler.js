@@ -1,86 +1,62 @@
-var defaultCorsHeaders = {
+var headers = {
   'access-control-allow-origin': '*',
   'access-control-allow-methods': 'GET, POST, PUT, DELETE, OPTIONS',
   'access-control-allow-headers': 'content-type, accept',
-  'access-control-max-age': 10 // Seconds.
+  'access-control-max-age': 10,
+  'Content-Type': 'application/json'
 };
 
-var requestHandler = function(request, response) {
-  console.log('Serving request type ' + request.method + ' for url ' + request.url);
-  var statusCode = 200;
-
-
-  var data = {};
-  data['results'] = [];
-
-  var sample = {
-    username: 'Jono',
-    message: 'Do my bidding!'
-  };
-
-  data['results'].push(sample);
-
-
-  // headers
-  var headers = defaultCorsHeaders;
-  headers['Content-Type'] = 'text/plain';
-
-  var reqMethod = request.method;
-
-  // if(reqMethod === 'POST') {
-  // }
-
-  // if(reqMethod === 'GET') {
-  // }
-
-  // if(reqMethod === 'OPTIONS') {
-  // }
- 
-  // response
+var send = function(response, data, statusCode) {
+  statusCode = statusCode || 200;
   response.writeHead(statusCode, headers);
-  response.end(JSON.stringify(data));
+  response.end( JSON.stringify(data) );
 };
 
-exports.requestHandler = requestHandler;
-
-
-
-/*
-var defaultCorsHeaders = {
-  'access-control-allow-origin': '*',
-  'access-control-allow-methods': 'GET, POST, PUT, DELETE, OPTIONS',
-  'access-control-allow-headers': 'content-type, accept',
-  'access-control-max-age': 10 // Seconds.
-};
+var objectId = 1;
+var messages = [
+  {
+    text: 'Hello World',
+    username: 'fred',
+    objectId: objectId
+  }
+];
 
 var requestHandler = function(request, response) {
-  console.log('Serving request type ' + request.method + ' for url ' + request.url);
-  var statusCode = 200;
-  var dataStore = { };
- 
-  dataStore['results'] = [];
-  
-
-  // headers
-  var headers = defaultCorsHeaders;
-  headers['Content-Type'] = 'text/plain';
 
   var reqMethod = request.method;
 
-  if (reqMethod === 'POST') {
-    // console.log(reqMethod);
-    dataStore.results.push(request._postData); 
+  // GET
+  if (reqMethod === 'GET') {
+    send(response, {results: messages});
   }
 
-  // if (reqMethod === 'GET') {
-  //   response.end(JSON.stringify(dataStore.results));
-  // }
-      
-  // response
-  response.writeHead(statusCode, headers);
- 
+  // POST
+  if (reqMethod === 'POST') {
+    var string = '';
+    request.on('data', function(chunk) {
+      string += chunk;
+    });
+    request.on('end', function() {
+
+      console.log("STRING", string);
+
+      var obj = JSON.parse(string);
+
+      console.log("OBJ", obj);
+
+      obj.objectId = ++objectId;
+
+      messages.push(obj);
+
+      send(response, {objectId: obj.objectId});
+    });
+  }
+
+  // OPTIONS
+  if (reqMethod === 'OPTIONS') {
+    send(response, 'Hi');
+  }
+
 };
 
 exports.requestHandler = requestHandler;
-
-*/

@@ -1,10 +1,11 @@
+// https://stackoverflow.com/questions/1256593/why-am-i-getting-an-options-request-instead-of-a-get-request
 
 var app = {
 
   //TODO: The current 'handleUsernameClick' function just toggles the class 'friend'
   //to all messages sent by the user
   // server: 'http://parse.sfm8.hackreactor.com/chatterbox/classes/messages',
-  server: 'http://127.0.0.1:3000',
+  server: 'http://127.0.0.1:3000/classes/chatterbox',
   username: 'anonymous',
   roomname: 'lobby',
   lastMessageId: 0,
@@ -43,7 +44,10 @@ var app = {
     $.ajax({
       url: app.server,
       type: 'POST',
-      data: message,
+
+      // stringify here?
+      // 
+      data: JSON.stringify(message),
       success: function (data) {
         // Clear messages input
         app.$message.val('');
@@ -58,6 +62,7 @@ var app = {
   },
 
   fetch: function(animate) {
+    console.log('CLIENT-FETCH-GET')
     $.ajax({
       url: app.server,
       type: 'GET',
